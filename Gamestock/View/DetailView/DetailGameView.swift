@@ -18,14 +18,13 @@ struct DetailGameView: View {
     @State var isLiked: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color("BgColor")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 if isLoading {
                     LoadingIndicatorView()
                 } else {
-
                     if viewModel.isLoadDetailGamesError {
                         VStack(alignment: .center, content: {
                             Text("Terjadi kesalahan, silahkan coba lagi")
@@ -34,9 +33,9 @@ struct DetailGameView: View {
 
                             Button(action: {
                                 Task {
-                                    self.isLoading = true
+                                    DispatchQueue.main.sync { isLoading = true }
                                     await viewModel.getDetailGameData(id: id)
-                                    self.isLoading = false
+                                    DispatchQueue.main.sync { isLoading = false }
                                 }
                             }, label: {
                                 Text("Coba lagi")
@@ -66,6 +65,10 @@ struct DetailGameView: View {
             isLoading = true
             await viewModel.getDetailGameData(id: self.id)
             isLoading = false
+
+            viewModel.getGame(id, completion: { result in
+                isLiked = result != nil
+            })
         }
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(Colors.bgColor, for: .navigationBar)
@@ -83,13 +86,35 @@ struct DetailGameView: View {
 
             }),
             trailing: Button(action: {
-                isLiked = !isLiked
+                Task {
+                    if isLiked {
+                        viewModel.deleteFavoriteGame(id, completion: {
+                            isLiked = false
+                        })
+
+                        viewModel.loadFavoriteGames()
+
+                    } else {
+                        let gameData = viewModel.detailGame!
+                        let data = GamesModel(
+                            id: id,
+                            name: gameData.name,
+                            released: gameData.released,
+                            backgroundImage: gameData.backgroundImage,
+                            rating: gameData.rating
+                        )
+
+                        viewModel.insertFavoriteGame(data, completion: {
+                            isLiked = true
+                        })
+                    }
+                }
             }, label: {
                 Image(systemName: isLiked ? "heart.fill" : "heart")
                     .frame(width: 28, height: 28)
                     .padding(.all, 8)
                     .foregroundStyle(isLiked ? Colors.redColor : Colors.blackColor)
-            })
+            }).isHidden(isLoading)
         )
     }
 }

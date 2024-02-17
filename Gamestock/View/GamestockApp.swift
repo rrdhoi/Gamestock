@@ -12,6 +12,8 @@ struct GamestockApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("Hp Kentang")
         }
     }
 }

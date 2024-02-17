@@ -46,7 +46,7 @@ struct PopularGamesView: View {
                 ScrollView(.horizontal,
                            showsIndicators: false,
                            content: {
-                            HStack(spacing: 16, content: {
+                            LazyHStack(spacing: 16, content: {
                                 ForEach(viewModel.games, id: \.id, content: { game in
                                     PopularGameItem(
                                         id: game.id,

@@ -27,6 +27,16 @@ struct ProfileView: View {
                         .padding(.bottom, 8)
                     Text(.init("[LinkedIn Profile](https://www.linkedin.com/in/rrdhoi/)"))
                         .customFont(Fonts.poppinsLight, size: 14, color: Colors.blueColor)
+                        .padding(.bottom, 16)
+
+                    NavigationLink(
+                        destination: FavoriteGamesSection()
+                    ) {
+                        Text("Daftar Game Favorite")
+                            .customFont(Fonts.poppinsLight, size: 14, color: Colors.blueColor)
+                            .underline()
+                            .padding(.bottom, 16)
+                    }
 
                 })
 

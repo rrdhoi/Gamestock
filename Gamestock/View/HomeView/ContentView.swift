@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: .topLeading) {
                 Color("BgColor")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

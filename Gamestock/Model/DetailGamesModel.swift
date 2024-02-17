@@ -21,6 +21,6 @@ struct DetailGamesModel: Decodable {
         case released
         case backgroundImage = "background_image"
         case rating
-        case description
+        case description = "description_raw"
     }
 }

@@ -54,7 +54,7 @@ struct StoreGameView: View {
                 ScrollView(.vertical,
                            showsIndicators: false,
                            content: {
-                            VStack(alignment: .center, spacing: 16, content: {
+                            LazyVStack(alignment: .center, spacing: 16, content: {
                                 ForEach(viewModel.stores, id: \.id) { store in
                                     StoreGameItem(
                                         id: store.id,
